@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer — eSouly Tools</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>#pdfFrame{width:100%;height:70vh;border:none;border-radius:8px;background:var(--bg2)}</style>
+</head>
+<body class="light">
+<header class="header"><div class="header-inner"><a href="/" class="logo">e<span>S</span>ouly <small>Tools</small></a><div class="header-right"><button class="theme-btn" onclick="toggleTheme()"><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg></button></div></div></header>
+<main class="tool-page">
+    <div class="tool-page-header">
+        <a href="/" class="back-btn">← Back to Tools</a>
+        <h1 class="tool-page-title">📕 PDF Viewer</h1>
+        <p class="tool-page-desc">View PDF files directly in your browser. No upload to server.</p>
+    </div>
+    <div class="tool-box">
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+            <div class="drop-zone-icon">📕</div>
+            <p>Click to select PDF or drag & drop here</p>
+            <small>Supports PDF files up to 100MB</small>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="loadPDF(this)">
+    </div>
+    <div class="tool-box" id="viewerBox" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <span id="fileName" style="font-size:13px;font-weight:600;color:var(--text)"></span>
+            <button class="btn btn-secondary" onclick="document.getElementById('viewerBox').style.display='none';document.getElementById('fileInput').value=''">Close</button>
+        </div>
+        <iframe id="pdfFrame"></iframe>
+    </div>
+</main>
+<footer class="footer"><div class="footer-inner"><a href="/" class="footer-logo">e<span>S</span>ouly <small>Tools</small></a><div class="footer-links"><a href="../contact.html">Contact</a><span>·</span><a href="../privacy.html">Privacy Policy</a><span>·</span><a href="../terms.html">Terms & Conditions</a></div><p class="footer-copy">© 2026 eSouly. All rights reserved.</p></div></footer>
+<script src="../assets/js/main.js"></script>
+<script>
+function loadPDF(input){
+    const file = input.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    document.getElementById('pdfFrame').src = url;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('viewerBox').style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+}
+function handleDrop(e){
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if(file && file.type==='application/pdf'){
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('fileInput').files = dt.files;
+        loadPDF(document.getElementById('fileInput'));
+    }
+}
+</script>
+</body></html>
