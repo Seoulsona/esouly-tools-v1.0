@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View PDF files online directly in your browser for free. No download or installation required.">
+    <link rel="canonical" href="https://www.esouly.com/tools/pdf-viewer.html">
+    <meta property="og:title" content="PDF Viewer — eSouly Tools">
+    <meta property="og:description" content="View PDF files online directly in your browser for free. No download or installation required.">
+    <meta property="og:url" content="https://www.esouly.com/tools/pdf-viewer.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.esouly.com/assets/img/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PDF Viewer — eSouly Tools">
+    <meta name="twitter:description" content="View PDF files online directly in your browser for free. No download or installation required.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script type="application/ld+json">{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PDF Viewer",
+        "description": "View PDF files online directly in your browser for free. No download or installation required.",
+        "url": "https://www.esouly.com/tools/pdf-viewer.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "provider": {"@type": "Organization", "name": "eSouly", "url": "https://www.esouly.com"}
+    }</script>
+    <title>PDF Viewer — eSouly Tools</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>#pdfFrame{width:100%;height:70vh;border:none;border-radius:8px;background:var(--bg2)}</style>
+</head>
+<body class="light">
+<header class="header"><div class="header-inner"><a href="/" class="logo">e<span>S</span>ouly <small>Tools</small></a><div class="header-right"><button class="theme-btn" onclick="toggleTheme()"><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg></button></div></div></header>
+<main class="tool-page">
+    <div class="tool-page-header">
+            <nav aria-label="breadcrumb" style="margin-bottom:8px;font-size:12px;color:var(--text2)">
+        <a href="/" style="color:var(--text2);text-decoration:none">Home</a>
+        <span style="margin:0 6px">›</span>
+        <a href="/" style="color:var(--text2);text-decoration:none">Tools</a>
+        <span style="margin:0 6px">›</span>
+        <span style="color:var(--text)">PDF Viewer</span>
+    </nav>
+        <nav aria-label="breadcrumb" style="margin-bottom:8px;font-size:12px;color:var(--text2)">
+        <a href="/" style="color:var(--text2);text-decoration:none">Home</a>
+        <span style="margin:0 6px">›</span>
+        <a href="/" style="color:var(--text2);text-decoration:none">Tools</a>
+        <span style="margin:0 6px">›</span>
+        <span style="color:var(--text)">PDF Viewer</span>
+    </nav>
+    <a href="/" class="back-btn" data-i18n="back_to_tools">← Back to Tools</a>
+        <h1 class="tool-page-title">📕 PDF Viewer</h1>
+        <p class="tool-page-desc">View PDF files directly in your browser. No upload to server.</p>
+    </div>
+    <div class="tool-box">
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+            <div class="drop-zone-icon">📕</div>
+            <p>Click to select PDF or drag & drop here</p>
+            <small>Supports PDF files up to 100MB</small>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="loadPDF(this)">
+    </div>
+    <div class="tool-box" id="viewerBox" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <span id="fileName" style="font-size:13px;font-weight:600;color:var(--text)"></span>
+            <button class="btn btn-secondary" onclick="document.getElementById('viewerBox').style.display='none';document.getElementById('fileInput').value=''">Close</button>
+        </div>
+        <iframe id="pdfFrame"></iframe>
+    </div>
+    <div class="tool-box" style="margin-top:24px">
+        <h3 style="margin-bottom:12px;font-size:14px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Related Tools</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="excel-viewer.html" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:13px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span>📗</span> Excel Viewer
+        </a>
+        <a href="word-viewer.html" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:13px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span>📘</span> Word Viewer
+        </a>
+        <a href="markdown-preview.html" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:13px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span>📝</span> Markdown Preview
+        </a>
+        </div>
+    </div>
+</main>
+<footer class="footer"><div class="footer-inner"><a href="/" class="footer-logo">e<span>S</span>ouly <small>Tools</small></a><div class="footer-links"><a href="../contact.html" data-i18n="footer_contact">Contact</a><span>·</span><a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a><span>·</span><a href="../terms.html" data-i18n="footer_terms">Terms & Conditions</a></div><p class="footer-copy">© 2026 eSouly. All rights reserved.</p></div></footer>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/tool-header.js"></script>
+<script>
+function loadPDF(input){
+    const file = input.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    document.getElementById('pdfFrame').src = url;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('viewerBox').style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+}
+function handleDrop(e){
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if(file && file.type==='application/pdf'){
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('fileInput').files = dt.files;
+        loadPDF(document.getElementById('fileInput'));
+    }
+}
+</script>
+<script src="../assets/js/i18n.js"></script>
+</body></html>
