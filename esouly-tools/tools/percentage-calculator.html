@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator — eSouly Tools</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light">
+<header class="header"><div class="header-inner">
+    <a href="/" class="logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="header-right" id="headerRight">
+        <button class="theme-btn" onclick="toggleTheme()">
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </div>
+</div></header>
+<main class="tool-page">
+    <div class="tool-page-header">
+        <a href="/" class="back-btn" data-i18n="back_to_tools">← Back to Tools</a>
+        <h1 class="tool-page-title">💯 Percentage Calculator</h1>
+        <p class="tool-page-desc">Calculate percentages, discounts and more.</p>
+    </div>
+    <div class="tool-box">
+        <h3>What is X% of Y?</h3>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+            <input class="tool-input" type="number" id="p1" placeholder="X %" style="width:100px">
+            <span style="color:var(--text2)">% of</span>
+            <input class="tool-input" type="number" id="p2" placeholder="Y" style="width:120px">
+            <span style="color:var(--text2)">=</span>
+            <strong id="r1" style="font-size:18px;color:var(--primary)">—</strong>
+        </div>
+        <button class="btn btn-primary" onclick="calc1()">Calculate</button>
+    </div>
+    <div class="tool-box">
+        <h3>X is what % of Y?</h3>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+            <input class="tool-input" type="number" id="p3" placeholder="X" style="width:120px">
+            <span style="color:var(--text2)">is what % of</span>
+            <input class="tool-input" type="number" id="p4" placeholder="Y" style="width:120px">
+            <span style="color:var(--text2)">=</span>
+            <strong id="r2" style="font-size:18px;color:var(--primary)">—</strong>
+        </div>
+        <button class="btn btn-primary" onclick="calc2()">Calculate</button>
+    </div>
+    <div class="tool-box">
+        <h3>Percentage Change</h3>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+            <span style="color:var(--text2)">From</span>
+            <input class="tool-input" type="number" id="p5" placeholder="Old value" style="width:120px">
+            <span style="color:var(--text2)">to</span>
+            <input class="tool-input" type="number" id="p6" placeholder="New value" style="width:120px">
+            <span style="color:var(--text2)">=</span>
+            <strong id="r3" style="font-size:18px;color:var(--primary)">—</strong>
+        </div>
+        <button class="btn btn-primary" onclick="calc3()">Calculate</button>
+    </div>
+</main>
+<footer class="footer"><div class="footer-inner">
+    <a href="/" class="footer-logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="footer-links">
+        <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <span>·</span>
+        <a href="../terms.html" data-i18n="footer_terms">Terms & Conditions</a>
+    </div>
+    <p class="footer-copy">© 2026 eSouly. All rights reserved.</p>
+</div></footer>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/tool-header.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script>
+function calc1(){
+    const p=parseFloat(document.getElementById('p1').value), n=parseFloat(document.getElementById('p2').value);
+    if(isNaN(p)||isNaN(n)) return;
+    document.getElementById('r1').textContent = (p/100*n).toFixed(4).replace(/\.?0+$/,'');
+}
+function calc2(){
+    const x=parseFloat(document.getElementById('p3').value), y=parseFloat(document.getElementById('p4').value);
+    if(isNaN(x)||isNaN(y)||y===0) return;
+    document.getElementById('r2').textContent = (x/y*100).toFixed(4).replace(/\.?0+$/,'') + '%';
+}
+function calc3(){
+    const o=parseFloat(document.getElementById('p5').value), n=parseFloat(document.getElementById('p6').value);
+    if(isNaN(o)||isNaN(n)||o===0) return;
+    const change = (n-o)/Math.abs(o)*100;
+    const r = document.getElementById('r3');
+    r.textContent = (change>=0?'+':'') + change.toFixed(2) + '%';
+    r.style.color = change>=0 ? '#22c55e' : '#ef4444';
+}
+</script>
+</body></html>

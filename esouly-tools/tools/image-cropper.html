@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper — eSouly Tools</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light">
+<header class="header"><div class="header-inner">
+    <a href="/" class="logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="header-right" id="headerRight">
+        <button class="theme-btn" onclick="toggleTheme()">
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </div>
+</div></header>
+<main class="tool-page">
+    <div class="tool-page-header">
+        <a href="/" class="back-btn" data-i18n="back_to_tools">← Back to Tools</a>
+        <h1 class="tool-page-title">✂️ Image Cropper</h1>
+        <p class="tool-page-desc">Crop images to any size or ratio.</p>
+    </div>
+    <div class="tool-box">
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault()">
+            <div style="font-size:48px;margin-bottom:12px">✂️</div>
+            <p style="font-weight:600;margin-bottom:4px">Click to select or drag & drop image</p>
+            <p style="font-size:12px;color:var(--text2)">Supports JPG, PNG, WebP</p>
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="loadImage(event)">
+        </div>
+    </div>
+    <div class="tool-box" id="cropBox" style="display:none">
+        <h3>Crop Settings</h3>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
+            <div><label style="font-size:12px;display:block;margin-bottom:4px">X</label><input class="tool-input" type="number" id="cx" value="0" min="0"></div>
+            <div><label style="font-size:12px;display:block;margin-bottom:4px">Y</label><input class="tool-input" type="number" id="cy" value="0" min="0"></div>
+            <div><label style="font-size:12px;display:block;margin-bottom:4px">Width</label><input class="tool-input" type="number" id="cw" min="1"></div>
+            <div><label style="font-size:12px;display:block;margin-bottom:4px">Height</label><input class="tool-input" type="number" id="ch" min="1"></div>
+        </div>
+        <div style="margin-bottom:14px">
+            <p style="font-size:12px;color:var(--text2);margin-bottom:6px">Quick ratios:</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px" onclick="setRatio(1,1)">1:1</button>
+                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px" onclick="setRatio(16,9)">16:9</button>
+                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px" onclick="setRatio(4,3)">4:3</button>
+                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px" onclick="setRatio(3,2)">3:2</button>
+            </div>
+        </div>
+        <img id="imgPreview" style="max-width:100%;border-radius:6px;margin-bottom:12px">
+        <button class="btn btn-primary" onclick="cropAndDownload()">Crop & Download</button>
+    </div>
+    <canvas id="canvas" style="display:none"></canvas>
+</main>
+<footer class="footer"><div class="footer-inner">
+    <a href="/" class="footer-logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="footer-links">
+        <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <span>·</span>
+        <a href="../terms.html" data-i18n="footer_terms">Terms & Conditions</a>
+    </div>
+    <p class="footer-copy">© 2026 eSouly. All rights reserved.</p>
+</div></footer>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/tool-header.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script>
+let cropImg, origFilename='image', imgW, imgH;
+function handleDrop(e){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f&&f.type.startsWith('image/')) loadFile(f); }
+function loadImage(e){ loadFile(e.target.files[0]); }
+function loadFile(file){
+    origFilename=file.name.replace(/\.[^.]+$/,'');
+    const reader=new FileReader();
+    reader.onload=e=>{
+        cropImg=new Image();
+        cropImg.onload=()=>{
+            imgW=cropImg.width; imgH=cropImg.height;
+            document.getElementById('cx').value=0; document.getElementById('cy').value=0;
+            document.getElementById('cw').value=imgW; document.getElementById('ch').value=imgH;
+            document.getElementById('cw').max=imgW; document.getElementById('ch').max=imgH;
+            document.getElementById('imgPreview').src=e.target.result;
+            document.getElementById('cropBox').style.display='block';
+        };
+        cropImg.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+function setRatio(rw,rh){
+    const w=Math.min(imgW,imgH*rw/rh);
+    const h=w*rh/rw;
+    document.getElementById('cw').value=Math.round(w);
+    document.getElementById('ch').value=Math.round(h);
+}
+function cropAndDownload(){
+    const x=+document.getElementById('cx').value, y=+document.getElementById('cy').value;
+    const w=+document.getElementById('cw').value, h=+document.getElementById('ch').value;
+    const canvas=document.getElementById('canvas');
+    canvas.width=w; canvas.height=h;
+    canvas.getContext('2d').drawImage(cropImg,x,y,w,h,0,0,w,h);
+    canvas.toBlob(blob=>downloadFile(blob,'cropped_'+origFilename+'.png'),'image/png');
+}
+</script>
+</body></html>

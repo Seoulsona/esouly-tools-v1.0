@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slug Generator — eSouly Tools</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light">
+<header class="header"><div class="header-inner">
+    <a href="/" class="logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="header-right" id="headerRight">
+        <button class="theme-btn" onclick="toggleTheme()">
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </div>
+</div></header>
+<main class="tool-page">
+    <div class="tool-page-header">
+        <a href="/" class="back-btn" data-i18n="back_to_tools">← Back to Tools</a>
+        <h1 class="tool-page-title">🔗 Slug Generator</h1>
+        <p class="tool-page-desc">Convert text to URL-friendly slugs.</p>
+    </div>
+    <div class="tool-box">
+        <textarea class="tool-input" id="input" rows="3" placeholder="Enter your title or text..."></textarea>
+        <div class="btn-group" style="margin-top:12px">
+            <button class="btn btn-primary" onclick="generateSlug()">Generate Slug</button>
+            <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+        </div>
+    </div>
+    <div class="tool-box" id="resultBox" style="display:none">
+        <h3>Slug</h3>
+        <input class="tool-input" id="output" readonly style="font-family:monospace;font-size:15px">
+        <button class="btn btn-secondary" style="margin-top:10px" onclick="copyText(document.getElementById('output').value)">Copy Slug</button>
+    </div>
+</main>
+<footer class="footer"><div class="footer-inner">
+    <a href="/" class="footer-logo">e<span>S</span>ouly <small>Tools</small></a>
+    <div class="footer-links">
+        <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <span>·</span>
+        <a href="../terms.html" data-i18n="footer_terms">Terms & Conditions</a>
+    </div>
+    <p class="footer-copy">© 2026 eSouly. All rights reserved.</p>
+</div></footer>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/tool-header.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script>
+function generateSlug(){
+    const val = document.getElementById('input').value.trim();
+    if(!val) return;
+    const slug = val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/[\s_-]+/g,'-').replace(/^-+|-+$/g,'');
+    document.getElementById('output').value = slug;
+    document.getElementById('resultBox').style.display='block';
+}
+function clearAll(){ document.getElementById('input').value=''; document.getElementById('resultBox').style.display='none'; }
+</script>
+</body></html>
